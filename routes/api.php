@@ -31,8 +31,12 @@ Route::get('service-operators',[OperatorAvailabilityController::class,'operators
 
 Route::get('service-operator-places',[OperatorAvailabilityController::class,'places']);
 
-Route::post('operators/{userId}/addresses',[OperatorAddressController::class,'store']);
 Route::get('operators/{userId}/addresses',[OperatorAddressController::class,'index']);
+Route::post('operators/{userId}/addresses',[OperatorAddressController::class,'store']);
+Route::get('operators/{userId}/applications',[ServiceApplicationController::class,'index']);
+Route::post('operators/{userId}/applications',[ServiceApplicationController::class,'store']);
+
+Route::get('/operators/{user_id}/services',function(Request $request){});
 
 Route::get('collection/{collection_id}/addresses',[CollectionAddressController::class,'index']);
 Route::post('collection/{collection_id}/addresses',[CollectionAddressController::class,'store']);
@@ -47,8 +51,6 @@ Route::post('/collections/consumers',[CollectionConsumerController::class,'store
 Route::get('collections/services',[ServiceController::class,'index']);
 
 
-Route::get('service-applications',[ServiceApplicationController::class,'index']);
-Route::post('service-applications',[ServiceApplicationController::class,'store']);
 
 Route::get('operator-service-model-items',[OperatorServiceModelItemController::class,'index']);
 
@@ -76,7 +78,9 @@ Route::post('/operators',function(Request $request){
     Operator::query()->create($request->only(['user_id' ]));
 });
 
-Route::get('/operators/{user_id}/services',function(Request $request){});
+
+
+
 
 
 

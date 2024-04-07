@@ -12,16 +12,17 @@ use Illuminate\Http\Request;
 class ServiceApplicationController extends Controller
 {
     use ResponseTemplate;
-    public function index(Request $request)
+    public function index(Request $request,string $userId)
     {
-        $serviceApplications = ServiceApplication::where('operator_id',$request->operator_id)->paginate($request->per_page ?? 5);
+        $operatorId = $userId;
+        $serviceApplications = ServiceApplication::where('operator_id',$operatorId)->paginate($request->per_page ?? 5);
         $this->setData(ServiceApplicationCollection::collection($serviceApplications));
         return $this->response();
     }
-    public function store(Request $request)
+    public function store(Request $request,string $userId)
     {
         $service_id = $request->service_id;
-        $operator_id = $request->operator_id;
+        $operator_id = $userId;
         $service = Service::where('id',$service_id)->whereDoesntHave('serviceApplications',function($query)use($operator_id){
              return $query->where('operator_id',$operator_id);
         })->first();
