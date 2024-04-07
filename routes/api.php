@@ -29,9 +29,12 @@ Route::apiResource('service-model-item', ServiceModelItemController::class);
 
 Route::get('collection/addresses',[AddressController::class,'index']);
 Route::post('collection/addresses',[AddressController::class,'store']);
+
 Route::get('collection/{collection_id}/services',[ServiceController::class,'index']);
 Route::post('collection/{collection_id}/services',[ServiceController::class,'store']);
+
 Route::get('collection/{collection_id}/appointable-items',[CollectionServiceItemController::class,'appointable']);
+
 
 Route::post('/collections/operators',[CollectionOperatorController::class,'store']);
 Route::post('/collections/consumers',[CollectionConsumerController::class,'store']);

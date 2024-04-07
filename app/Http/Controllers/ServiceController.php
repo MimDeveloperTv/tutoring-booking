@@ -15,21 +15,10 @@ class ServiceController extends Controller
     use ResponseTemplate;
     public function index(Request $request, $user_collection_id)
     {
+           $services = Service::query()->where('user_collection_id', $user_collection_id)
+               ->paginate($request->per_page ?? 5);
 
-//            if($type == 'all')
-//            {
-                $services = Service::where('user_collection_id', $user_collection_id)->paginate($request->per_page ?? 5);
-//            }
-//            else
-//            {
-//                $services = Service::where('user_collection_id', $user_collection_id)->whereHas('serviceModel', function ($query) use ($type) {
-//                    return $query->whereHas('serviceCategory', function ($query) use ($type) {
-//                        return $query->where('type', $type);
-//                    });
-//                })->paginate($request->per_page ?? 5);
-//            }
             $this->setData(ServiceCollection::collection($services));
-
 
         return $this->response();
     }
@@ -37,9 +26,12 @@ class ServiceController extends Controller
     public function store(Request $request, $user_collection_id)
     {
         $service_model_id = $request->service_model_id;
-        $serviceModel = ServiceModel::where('id', $service_model_id)->whereDoesntHave('services', function ($query) use ($user_collection_id) {
+
+        $serviceModel = ServiceModel::where('id', $service_model_id)
+            ->whereDoesntHave('services', function ($query) use ($user_collection_id) {
             return $query->where('user_collection_id', $user_collection_id);
         })->first();
+
         try {
             if ($serviceModel) {
                 $service = $serviceModel->services()->create([
@@ -54,10 +46,12 @@ class ServiceController extends Controller
                 $this->setData(new ServiceResource($service));
             } else {
                 $this->setStatus(422);
-                $this->setErrors(['message' => 'ERROR! selected service not found! It may have been deleted or already used.']);
+                $this->setErrors(
+                    ['message' => 'ERROR! selected service not found! It may have been deleted or already used.']);
             }
         } catch (\Throwable $th) {
-            $this->setErrors(['message' => 'Programmer ERROR! :' . $th->getMessage()]);
+            $this->setErrors(
+                ['message' => 'Programmer ERROR! :' . $th->getMessage()]);
             $this->setStatus(500);
         }
         return $this->response();
