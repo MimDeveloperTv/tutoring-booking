@@ -10,7 +10,6 @@ class StoreCollectionAddressRequest extends FormRequest
     {
         return [
             'title' => ['required'],
-            'user_collection_id' => ['required'],
             'latitude' => ['nullable', 'numeric'],
             'longitude' => ['nullable', 'numeric'],
             'description' => ['required'],

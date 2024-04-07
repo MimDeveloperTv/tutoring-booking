@@ -27,9 +27,15 @@ Route::apiResource('category', CategoryController::class);
 Route::apiResource('service-model-category', ServiceModelController::class);
 Route::apiResource('service-model-item', ServiceModelItemController::class);
 
-Route::get('collection/addresses',[AddressController::class,'index']);
-Route::post('collection/addresses',[AddressController::class,'store']);
+Route::get('service-operators',[OperatorAvailabilityController::class,'operators']);
 
+Route::get('service-operator-places',[OperatorAvailabilityController::class,'places']);
+
+Route::post('operators/addresses',[OperatorAddressController::class,'store']);
+Route::get('operators/addresses',[OperatorAddressController::class,'index']);
+
+Route::get('collection/{collection_id}/addresses',[AddressController::class,'index']);
+Route::post('collection/{collection_id}/addresses',[AddressController::class,'store']);
 Route::get('collection/{collection_id}/services',[ServiceController::class,'index']);
 Route::post('collection/{collection_id}/services',[ServiceController::class,'store']);
 
@@ -54,12 +60,6 @@ Route::post('weekly-schedules',[WeeklySchedulingController::class,'store']);
 
 Route::get('exception-schedules',[ExceptionSchedulingController::class,'index']);
 Route::post('exception-schedules',[ExceptionSchedulingController::class,'store']);
-
-Route::get('service-operators',[OperatorAvailabilityController::class,'operators']);
-
-Route::get('service-operator-places',[OperatorAvailabilityController::class,'places']);
-Route::post('operators/addresses',[OperatorAddressController::class,'store']);
-Route::get('operators/addresses',[OperatorAddressController::class,'index']);
 
 Route::get('service-application-place/slots',[BookingController::class,'slots']);
 

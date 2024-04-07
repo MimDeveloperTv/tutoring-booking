@@ -22,8 +22,11 @@ class OperatorAddressController extends Controller
             'description' => 'required',
             'phone' => 'required',
         ]);
-        $user = User::find($request->user_id);
-        $address =  User::find($request->user_id)->addresses()->create([
+
+        $user = User::query()->find($request->user_id);
+        /* @var \App\Models\User $user */
+
+        $address =  $user->addresses()->create([
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'description' => $request->description,
@@ -34,8 +37,10 @@ class OperatorAddressController extends Controller
     }
     public function index(Request $request)
     {
-        $addresses = Address::where('addressable_id',$request->user_id)
-        ->orWhere('addressable_id',$request->user_collection_id)->get();
+        $addresses = Address::query()
+             ->where('addressable_id',$request->user_id)
+             ->orWhere('addressable_id',$request->user_collection_id)
+             ->get();
         $this->setData(AddressCollection::collection($addresses));
         return $this->response();
     }

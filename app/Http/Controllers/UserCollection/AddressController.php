@@ -19,16 +19,17 @@ class AddressController extends Controller
         $this->addressService = $addressService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $user_collection_id)
     {
-        $this->setData(AddressResource::collection($this->addressService->getAll($request->user_collection_id)));
+        $collection = $this->addressService->getAll($user_collection_id);
+        $this->setData(AddressResource::collection($collection));
          return $this->response();
     }
 
-    public function store(StoreCollectionAddressRequest $request)
+    public function store(StoreCollectionAddressRequest $request, $user_collection_id)
     {
          $addressDTO = new AddressDTO(
-             addressable_id: $request->input('user_collection_id'),
+             addressable_id: $user_collection_id,
              addressable_type: "App\Models\UserCollection",
              title: $request->input('title'),
              latitude: $request->input('latitude'),
