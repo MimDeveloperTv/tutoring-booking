@@ -1,0 +1,67 @@
+.
+    // Weekly timing table requirements
+[
+  {
+    "ServiceProviderId" : 5,
+     "Day":3,
+    "Start":10,
+    "End":13
+  },
+  {
+     "ServiceProviderId" : 5,
+     "Day":3,
+     "Start":15,
+     "End":18
+  },
+  {
+    "ServiceProviderId" : 5,
+     "Day":4,
+    "Start":11,
+    "End":15
+  },
+  {
+    "ServiceProviderId" : 5,
+     "Day":5,
+    "Start":9,
+    "End":12
+  },
+  {
+     "ServiceProviderId" : 5,
+     "Day":5,
+     "Start":15,
+     "End":20
+  }
+
+],
+
+
+//Exception days table requirements
+
+[
+    {
+        "ServiceProviderId" : 5,
+        "Date":1402-08-25,
+        "Start":9,
+        "End":12,
+        "Type":"on"
+     },
+     {
+        "ServiceProviderId" : 5,
+        "Date":1402-09-11,
+        "Start":13,
+        "End":null,    //null for end means until the end of the working day and for start means from the beginning of the working day
+        "Type":"of"
+     }
+]
+
+
+
+//calender table 
+
+
+
+
+
+
+
+// reserves tables
