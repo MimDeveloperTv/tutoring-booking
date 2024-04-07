@@ -26,7 +26,9 @@ class CollectionOperatorController extends Controller
             ],'iam','/collections/auth');
             $collection_id = json_decode($iam_response->body())->data->id;
             try {
-                $operator = Operator::where('user_collection_id',$collection_id)->where('user_id',$request->user_id)->first();
+                $operator = Operator::where('user_collection_id',$collection_id)
+                    ->where('user_id',$request->user_id)
+                    ->first();
                 if(!$operator)
                 {
                     $operator = Operator::updateOrCreate(

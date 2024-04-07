@@ -13,20 +13,41 @@ class OperatorAddressController extends Controller
 {
     use ResponseTemplate;
 
-    public function store(Request $request)
+    public function index(Request $request,string $userId)
+    {
+        $addressType = 'App\Models\User';
+
+        $addresses = Address::query()
+            ->where('addressable_id',$userId)
+            ->where('addressable_type',$addressType)
+            ->get();
+
+        /* Disable load both of Address in This Route
+        $addresses = Address::query()
+            ->where('addressable_id',$userId)
+               ->orWhere('addressable_id',$request->user_collection_id)
+            ->get();
+        */
+
+        $this->setData(AddressCollection::collection($addresses));
+        return $this->response();
+    }
+
+    public function store(Request $request,string $userId)
     {
         $request->validate([
-            'user_id' => 'required',
+            'title' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
             'description' => 'required',
             'phone' => 'required',
         ]);
 
-        $user = User::query()->find($request->user_id);
+        $user = User::query()->find($userId);
         /* @var \App\Models\User $user */
 
         $address =  $user->addresses()->create([
+            'title' => $request->title,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'description' => $request->description,
@@ -35,13 +56,5 @@ class OperatorAddressController extends Controller
         $this->setData(new AddressCollection($address));
         return $this->response();
     }
-    public function index(Request $request)
-    {
-        $addresses = Address::query()
-             ->where('addressable_id',$request->user_id)
-             ->orWhere('addressable_id',$request->user_collection_id)
-             ->get();
-        $this->setData(AddressCollection::collection($addresses));
-        return $this->response();
-    }
+
 }

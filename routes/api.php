@@ -12,7 +12,7 @@ use App\Http\Controllers\ServiceApplicationPlaceController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceModelController;
 use App\Http\Controllers\ServiceRequestController;
-use App\Http\Controllers\UserCollection\AddressController;
+use App\Http\Controllers\UserCollection\CollectionAddressController;
 use App\Http\Controllers\WeeklySchedulingController;
 use App\Models\Operator;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServiceModelItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionServiceItemController;
-
+use App\Http\Controllers\OperatorServiceModelItemController;
 
 
 Route::apiResource('category', CategoryController::class);
@@ -31,11 +31,11 @@ Route::get('service-operators',[OperatorAvailabilityController::class,'operators
 
 Route::get('service-operator-places',[OperatorAvailabilityController::class,'places']);
 
-Route::post('operators/addresses',[OperatorAddressController::class,'store']);
-Route::get('operators/addresses',[OperatorAddressController::class,'index']);
+Route::post('operators/{userId}/addresses',[OperatorAddressController::class,'store']);
+Route::get('operators/{userId}/addresses',[OperatorAddressController::class,'index']);
 
-Route::get('collection/{collection_id}/addresses',[AddressController::class,'index']);
-Route::post('collection/{collection_id}/addresses',[AddressController::class,'store']);
+Route::get('collection/{collection_id}/addresses',[CollectionAddressController::class,'index']);
+Route::post('collection/{collection_id}/addresses',[CollectionAddressController::class,'store']);
 Route::get('collection/{collection_id}/services',[ServiceController::class,'index']);
 Route::post('collection/{collection_id}/services',[ServiceController::class,'store']);
 
@@ -50,7 +50,7 @@ Route::get('collections/services',[ServiceController::class,'index']);
 Route::get('service-applications',[ServiceApplicationController::class,'index']);
 Route::post('service-applications',[ServiceApplicationController::class,'store']);
 
-Route::get('operator-service-model-items',[\App\Http\Controllers\OperatorServiceModelItemController::class,'index']);
+Route::get('operator-service-model-items',[OperatorServiceModelItemController::class,'index']);
 
 Route::get('service-application-places',[ServiceApplicationPlaceController::class,'index']);
 Route::post('service-application-places',[ServiceApplicationPlaceController::class,'store']);
