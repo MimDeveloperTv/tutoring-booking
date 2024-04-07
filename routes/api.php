@@ -36,6 +36,10 @@ Route::post('operators/{userId}/addresses',[OperatorAddressController::class,'st
 Route::get('operators/{userId}/applications',[ServiceApplicationController::class,'index']);
 Route::post('operators/{userId}/applications',[ServiceApplicationController::class,'store']);
 
+Route::get('operators/{userId}/application-places/{applicationId}',[ServiceApplicationPlaceController::class,'index']);
+Route::post('operators/{userId}/application-places/{applicationId}',[ServiceApplicationPlaceController::class,'store']);
+
+
 Route::get('/operators/{user_id}/services',function(Request $request){});
 
 Route::get('collection/{collection_id}/addresses',[CollectionAddressController::class,'index']);
@@ -54,8 +58,7 @@ Route::get('collections/services',[ServiceController::class,'index']);
 
 Route::get('operator-service-model-items',[OperatorServiceModelItemController::class,'index']);
 
-Route::get('service-application-places',[ServiceApplicationPlaceController::class,'index']);
-Route::post('service-application-places',[ServiceApplicationPlaceController::class,'store']);
+
 
 Route::get('weekly-schedules',[WeeklySchedulingController::class,'index']);
 Route::post('weekly-schedules',[WeeklySchedulingController::class,'store']);

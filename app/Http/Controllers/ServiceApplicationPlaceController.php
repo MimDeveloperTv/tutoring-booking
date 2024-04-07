@@ -10,13 +10,17 @@ use Illuminate\Http\Request;
 class ServiceApplicationPlaceController extends Controller
 {
     use ResponseTemplate;
-    public function store(Request $request)
+    public function store(Request $request,string $userId,string $applicationId)
     {
+        $serviceId = $applicationId;
         $address_id = $request->address_id;
-        $applicationService = ServiceApplication::find($request->service_application_id)->whereDoesntHave('places',function($query)use($address_id){
+
+        $applicationService = ServiceApplication::query()
+            ->find($serviceId)
+            ->whereDoesntHave('places',function($query)use($address_id){
             return $query->where('address_id',$address_id);
         })->first();
-        
+
         try {
             if($applicationService)
         {
@@ -38,10 +42,16 @@ class ServiceApplicationPlaceController extends Controller
         return $this->response();
     }
 
-    public function index(Request $request)
+    public function index(Request $request,string $userId,string $applicationId)
     {
+        $operatorId = $userId;
+        $serviceId = $applicationId;
 
-        $applicationPlaces = ServiceApplication::where('operator_id',$request->operator_id)->where('service_id',$request->service_id)->first()->places;
+        $applicationPlaces = ServiceApplication::query()
+            ->where('operator_id',$operatorId)
+            ->where('service_id',$serviceId)
+            ->first()
+            ->places;
         $this->setData($applicationPlaces);
         return $this->response();
     }
