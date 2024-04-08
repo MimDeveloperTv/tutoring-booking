@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Events\ServiceApplicationBooked;
 use App\Http\Resources\ReserveResource;
+use App\Lib\Utils;
+use App\Models\Consumer;
 use App\Models\Reserve;
 use App\Models\ServiceApplicationPlace;
 use App\Traits\ResponseTemplate;
@@ -39,8 +41,10 @@ class ReserveService
             } else {
                 $serviceApplication = ServiceApplicationPlace::find($request->service_application_place_id)->serviceApplication;
                 $price = $serviceApplication->price ?? $serviceApplication->service->default_price;
+                $consumerId = $this->getConsumerId($request->consumer_id,Utils::getUserId());
+
                 $reserve = Reserve::create([
-                    'consumer_id' => $request->consumer_id,
+                    'consumer_id' => $consumerId,
                     'service_application_place_id' => $request->service_application_place_id,
                     'operator_id' => $serviceApplication->operator_id,
                     'service_model_item_id' => $request->service_model_item_id,
@@ -48,8 +52,6 @@ class ReserveService
                     'currency' => $request->currency ?? 'IR-RIAL',
                     'from' =>  Carbon::createFromFormat('Y-m-d H:i:s', $request->from.":00")->timestamp,
                     'to' =>  Carbon::createFromFormat('Y-m-d H:i:s', $request->to.":00")->timestamp,
-//                    'payment_status' => $request->payment_status,
-//                    'status' => $request->status,
                 ]);
                 event(new ServiceApplicationBooked($reserve));
                 $this->setData(new ReserveResource($reserve));
@@ -77,5 +79,17 @@ class ReserveService
         if($LastReservedFromTheSameOperator){
            throw new PreventUserToReserveTwiceWithinADayException();
         }
+    }
+
+    private function getConsumerId($requestConsumerId,$userId)
+    {
+        if(empty($requestConsumerId))
+        {
+            return Consumer::query()->where('user_id',$userId)->first()->id;
+        }
+        else{
+            return $requestConsumerId;
+        }
+
     }
 }

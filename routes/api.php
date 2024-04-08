@@ -27,38 +27,22 @@ Route::apiResource('category', CategoryController::class);
 Route::apiResource('service-model-category', ServiceModelController::class);
 Route::apiResource('service-model-item', ServiceModelItemController::class);
 
-Route::get('service-operators',[OperatorAvailabilityController::class,'operators']);
-
-Route::get('service-operator-places',[OperatorAvailabilityController::class,'places']);
-
 Route::get('operators/{userId}/addresses',[OperatorAddressController::class,'index']);
 Route::post('operators/{userId}/addresses',[OperatorAddressController::class,'store']);
 Route::get('operators/{userId}/applications',[ServiceApplicationController::class,'index']);
 Route::post('operators/{userId}/applications',[ServiceApplicationController::class,'store']);
-
 Route::get('operators/{userId}/application-places/{applicationId}',[ServiceApplicationPlaceController::class,'index']);
 Route::post('operators/{userId}/application-places/{applicationId}',[ServiceApplicationPlaceController::class,'store']);
-
-
-Route::get('/operators/{user_id}/services',function(Request $request){});
 
 Route::get('collection/{collection_id}/addresses',[CollectionAddressController::class,'index']);
 Route::post('collection/{collection_id}/addresses',[CollectionAddressController::class,'store']);
 Route::get('collection/{collection_id}/services',[ServiceController::class,'index']);
 Route::post('collection/{collection_id}/services',[ServiceController::class,'store']);
-
 Route::get('collection/{collection_id}/appointable-items',[CollectionServiceItemController::class,'appointable']);
-
 
 Route::post('/collections/operators',[CollectionOperatorController::class,'store']);
 Route::post('/collections/consumers',[CollectionConsumerController::class,'store']);
 Route::get('collections/services',[ServiceController::class,'index']);
-
-
-
-Route::get('operator-service-model-items',[OperatorServiceModelItemController::class,'index']);
-
-
 
 Route::get('weekly-schedules',[WeeklySchedulingController::class,'index']);
 Route::post('weekly-schedules',[WeeklySchedulingController::class,'store']);
@@ -66,25 +50,14 @@ Route::post('weekly-schedules',[WeeklySchedulingController::class,'store']);
 Route::get('exception-schedules',[ExceptionSchedulingController::class,'index']);
 Route::post('exception-schedules',[ExceptionSchedulingController::class,'store']);
 
-Route::get('service-application-place/slots',[BookingController::class,'slots']);
-
-
-Route::get('services',[ServiceModelController::class,'index']);
-
-
 Route::get('service-requests',[ServiceRequestController::class,'index']);
 Route::post('service-requests',[ServiceRequestController::class,'store'])->middleware(['auth:user','user-has-model:operator']);
 
-
-
-Route::post('/operators',function(Request $request){
-    Operator::query()->create($request->only(['user_id' ]));
-});
-
-
-
-
-
+Route::get('service-application-place/slots',[BookingController::class,'slots']);
+Route::get('service-operators',[OperatorAvailabilityController::class,'operators']);
+Route::get('service-operator-places',[OperatorAvailabilityController::class,'places']);
+Route::get('operator-service-model-items',[OperatorServiceModelItemController::class,'index']);
+Route::get('services',[ServiceModelController::class,'index']);
 
 
 /* todo: this route is old and new implement in core service */
