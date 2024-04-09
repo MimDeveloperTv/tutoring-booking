@@ -9,24 +9,12 @@ use App\Lib\Http\Request as CustomRequest;
 class CollectionOperatorController extends Controller
 {
     use ResponseTemplate;
-    public function index(Request $request,$collection_id)
+
+    public function store(Request $request,$userCollectionId)
     {
-
-    }
-
-    public function store(Request $request)
-    {
-        $iam_api_key = $request->header('api-key');
-
         try {
-            $iam_response = CustomRequest::get([
-                'authorization' => 'Bearer '.$iam_api_key
-            ],[
-
-            ],'iam','/collections/auth');
-            $collection_id = json_decode($iam_response->body())->data->id;
             try {
-                $operator = Operator::where('user_collection_id',$collection_id)
+                $operator = Operator::where('user_collection_id',$userCollectionId)
                     ->where('user_id',$request->user_id)
                     ->first();
                 if(!$operator)
@@ -35,7 +23,7 @@ class CollectionOperatorController extends Controller
                         [
                             'user_id' => $request->user_id
                         ],[
-                        'user_collection_id' => $collection_id,
+                        'user_collection_id' => $userCollectionId,
                         'user_id' => $request->user_id,
                         'fullname' => $request->fullname,
                         'avatar' => $request->avatar
@@ -56,8 +44,6 @@ class CollectionOperatorController extends Controller
             $this->setStatus(400);
             $this->setErrors($th->getMessage());
         }
-
-
 
          return $this->response();
     }

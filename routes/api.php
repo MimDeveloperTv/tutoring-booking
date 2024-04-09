@@ -33,19 +33,19 @@ Route::get('operators/{userId}/applications',[ServiceApplicationController::clas
 Route::post('operators/{userId}/applications',[ServiceApplicationController::class,'store']);
 Route::get('operators/{userId}/application-places/{applicationId}',[ServiceApplicationPlaceController::class,'index']);
 Route::post('operators/{userId}/application-places/{applicationId}',[ServiceApplicationPlaceController::class,'store']);
+Route::get('operators/{userId}/application-items/',[OperatorServiceModelItemController::class,'index']);
+
 
 Route::get('collection/{collection_id}/addresses',[CollectionAddressController::class,'index']);
 Route::post('collection/{collection_id}/addresses',[CollectionAddressController::class,'store']);
 Route::get('collection/{collection_id}/services',[ServiceController::class,'index']);
 Route::post('collection/{collection_id}/services',[ServiceController::class,'store']);
 Route::get('collection/{collection_id}/appointable-items',[CollectionServiceItemController::class,'appointable']);
+Route::post('/collection/{collection_id}/operators',[CollectionOperatorController::class,'store']);
+Route::post('/collection/{collection_id}/consumers',[CollectionConsumerController::class,'store']);
 
 Route::get('services/{serviceId}/operators',[OperatorAvailabilityController::class,'operators']);
 
-
-Route::post('/collections/operators',[CollectionOperatorController::class,'store']);
-Route::post('/collections/consumers',[CollectionConsumerController::class,'store']);
-Route::get('collections/services',[ServiceController::class,'index']);
 
 Route::post('reserve',[ReserveController::class,'store']);
 Route::post('reserve/slots',[BookingController::class,'slots']);
@@ -63,20 +63,11 @@ Route::get('service-requests',[ServiceRequestController::class,'index']);
 Route::post('service-requests',[ServiceRequestController::class,'store'])->middleware(['auth:user','user-has-model:operator']);
 
 
-Route::get('operator-service-model-items',[OperatorServiceModelItemController::class,'index']);
-Route::get('services',[ServiceModelController::class,'index']);
-
-
 /* todo: this route is old and new implement in core service */
 //Route::get('collection/appointments',[ReserveController::class,'getCollectionReserves']);
 
 // todo: this route moved to core service and not need to booking service
 Route::get('appointments/{id}',[ReserveController::class,'show']);
-
-
-
-
-
 
 // todo: convert
 // refactor one method to spilit method for update statuses

@@ -19,17 +19,23 @@ class OperatorServiceModelItemController extends Controller
 
         try {
             $operator_id = $request->operator_id;
-            $items = ServiceModelItem::whereHas('serviceModel',function (Builder $serviceModel)use ($operator_id){
-                return $serviceModel->whereHas('services',function (Builder $services)use ($operator_id){
-                    return $services->whereHas('serviceApplications',function (Builder $serviceApplication)use ($operator_id){
+            $items = ServiceModelItem::whereHas('serviceModel',
+                function (Builder $serviceModel)use ($operator_id){
+                return $serviceModel->whereHas('services',
+                    function (Builder $services)use ($operator_id){
+                    return $services->whereHas('serviceApplications',
+                        function (Builder $serviceApplication)use ($operator_id){
                         return $serviceApplication->where('operator_id',$operator_id);
                     });
                 });
             })->with('serviceModel',function (BelongsTo $serviceModel)use($operator_id){
-                return $serviceModel->with('services',function (HasMany $services)use ($operator_id){
-                    return $services->whereHas('serviceApplications',function (Builder $serviceApplication)use ($operator_id){
+                return $serviceModel->with('services',
+                    function (HasMany $services)use ($operator_id){
+                    return $services->whereHas('serviceApplications',
+                        function (Builder $serviceApplication)use ($operator_id){
                         return $serviceApplication->where('operator_id',$operator_id);
-                    })->with('serviceApplications',function (HasMany $serviceApplication)use ($operator_id){
+                    })->with('serviceApplications',
+                        function (HasMany $serviceApplication)use ($operator_id){
                             return $serviceApplication->where('operator_id',$operator_id);
                     });
                 });
