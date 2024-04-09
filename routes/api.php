@@ -40,9 +40,15 @@ Route::get('collection/{collection_id}/services',[ServiceController::class,'inde
 Route::post('collection/{collection_id}/services',[ServiceController::class,'store']);
 Route::get('collection/{collection_id}/appointable-items',[CollectionServiceItemController::class,'appointable']);
 
+Route::get('services/{serviceId}/operators',[OperatorAvailabilityController::class,'operators']);
+
+
 Route::post('/collections/operators',[CollectionOperatorController::class,'store']);
 Route::post('/collections/consumers',[CollectionConsumerController::class,'store']);
 Route::get('collections/services',[ServiceController::class,'index']);
+
+
+
 
 Route::get('weekly-schedules',[WeeklySchedulingController::class,'index']);
 Route::post('weekly-schedules',[WeeklySchedulingController::class,'store']);
@@ -54,8 +60,7 @@ Route::get('service-requests',[ServiceRequestController::class,'index']);
 Route::post('service-requests',[ServiceRequestController::class,'store'])->middleware(['auth:user','user-has-model:operator']);
 
 Route::get('service-application-place/slots',[BookingController::class,'slots']);
-Route::get('service-operators',[OperatorAvailabilityController::class,'operators']);
-Route::get('service-operator-places',[OperatorAvailabilityController::class,'places']);
+
 Route::get('operator-service-model-items',[OperatorServiceModelItemController::class,'index']);
 Route::get('services',[ServiceModelController::class,'index']);
 
