@@ -21,6 +21,6 @@ class SendNewReserveToCollectionJob implements ShouldQueue
     {
         CustomRequest::post([
             'domain' => $this->booked['domain']
-        ],$this->booked,'core_clinic','/new-reservation-occurred');
+        ],$this->booked,'core_clinic','/reserves/notification');
     }
 }

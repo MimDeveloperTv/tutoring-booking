@@ -3,13 +3,11 @@
 namespace App\Lib\Http;
 
 use Illuminate\Support\Facades\Http;
-use Log;
 
 class Request
 {
     public function __construct()
     {
-
     }
 
     public static function post($request_headers, $request_body, $service, $route)
@@ -22,14 +20,10 @@ class Request
             ];
             $response = Http::withHeaders(array_merge($headers, $request_headers))
                 ->post(config("services.$service.base_url") . $route, $request_body);
-            if ($response->status() == 500) {
-                Log::debug($service . " : " . $response->body());
-            }
 
             return $response;
 
         } catch (\Throwable $th) {
-            Log::debug($th->getMessage());
             $error = [
                 'message' => 'gateway server error :' . $th->getMessage()
             ];
@@ -49,13 +43,8 @@ class Request
             $response = Http::withHeaders(array_merge($headers, $request_headers))
                 ->get(config("services.$service.base_url") . $route, $request_body);
 
-            if ($response->status() == 500) {
-                Log::debug($service . " : " . $response->body());
-            }
-
             return $response;
         } catch (\Throwable $th) {
-            Log::debug($th->getMessage());
             $error = [
                 'message' => 'gateway server error :' . $th->getMessage()
             ];
