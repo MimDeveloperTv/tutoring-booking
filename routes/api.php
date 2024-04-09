@@ -39,6 +39,7 @@ Route::get('operators/{userId}/application-places/{applicationId}',[ServiceAppli
 Route::post('operators/{userId}/application-places/{applicationId}',[ServiceApplicationPlaceController::class,'store']);
 Route::get('operators/{userId}/application-items/',[OperatorServiceModelItemController::class,'index']);
 
+
 Route::get('collection/{collection_id}/addresses',[CollectionAddressController::class,'index']);
 Route::post('collection/{collection_id}/addresses',[CollectionAddressController::class,'store']);
 Route::get('collection/{collection_id}/services',[ServiceController::class,'index']);
@@ -52,16 +53,16 @@ Route::post('reserves',[ReserveController::class,'store']);
 Route::post('reserves/slots',[BookingController::class,'slots']);
 Route::get('reserves/{id}',[ReserveController::class,'show']);
 
+Route::get('schedules/weekly/operators/{userId}',[WeeklySchedulingController::class,'index']);
+Route::post('schedules/weekly/operators/{userId}',[WeeklySchedulingController::class,'store']);
+Route::get('schedules/exception/applications/{applicationId}',[ExceptionSchedulingController::class,'index']);
+Route::post('schedules/exception/applications/{applicationId}',[ExceptionSchedulingController::class,'store']);
+
 /* ----- outside  Scope ------- */
 
 
 
-/* -- Not Refactored ------------------- */
-Route::get('weekly-schedules',[WeeklySchedulingController::class,'index']);
-Route::post('weekly-schedules',[WeeklySchedulingController::class,'store']);
-
-Route::get('exception-schedules',[ExceptionSchedulingController::class,'index']);
-Route::post('exception-schedules',[ExceptionSchedulingController::class,'store']);
-
-Route::get('service-requests',[ServiceRequestController::class,'index']);
-Route::post('service-requests',[ServiceRequestController::class,'store'])->middleware(['auth:user','user-has-model:operator']);
+/* -- Deprecate And Remove Soon ------------------- */
+//Route::get('service-requests',[ServiceRequestController::class,'index']);
+//Route::post('service-requests',[ServiceRequestController::class,'store'])
+//->middleware(['auth:user','user-has-model:operator']);
