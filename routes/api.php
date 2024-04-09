@@ -47,6 +47,9 @@ Route::post('/collections/operators',[CollectionOperatorController::class,'store
 Route::post('/collections/consumers',[CollectionConsumerController::class,'store']);
 Route::get('collections/services',[ServiceController::class,'index']);
 
+Route::post('reserve',[ReserveController::class,'store']);
+Route::post('reserve/slots',[BookingController::class,'slots']);
+
 
 
 
@@ -59,7 +62,6 @@ Route::post('exception-schedules',[ExceptionSchedulingController::class,'store']
 Route::get('service-requests',[ServiceRequestController::class,'index']);
 Route::post('service-requests',[ServiceRequestController::class,'store'])->middleware(['auth:user','user-has-model:operator']);
 
-Route::get('service-application-place/slots',[BookingController::class,'slots']);
 
 Route::get('operator-service-model-items',[OperatorServiceModelItemController::class,'index']);
 Route::get('services',[ServiceModelController::class,'index']);
@@ -72,8 +74,8 @@ Route::get('services',[ServiceModelController::class,'index']);
 Route::get('appointments/{id}',[ReserveController::class,'show']);
 
 
-// todo: this method implement in core service and redirect core to booking api
-Route::post('reserves',[ReserveController::class,'store']);
+
+
 
 
 // todo: convert
